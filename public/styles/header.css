@@ -1,0 +1,158 @@
+:root {
+    --primary: #000000;
+    --secondary: #1DB5B5;
+    --background: #F5F5F5;
+    --text: #333333;
+    --border: #E5E5E5;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--background);
+    color: var(--text);
+}
+
+.hdr-header {
+    background-color: #F5F5F5;
+    padding: 1rem 2rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-bottom: 2rem;
+}
+
+.hdr-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.hdr-logo {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary);
+    text-decoration: none;
+}
+
+.hdr-nav-links {
+    display: flex;
+    gap: 2rem;
+}
+
+.hdr-nav-link {
+    color: var(--primary);
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.hdr-search-container {
+    position: relative;
+}
+
+.hdr-search-input {
+    padding: 0.5rem 1rem 0.5rem 2.5rem;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    font-size: 0.9rem;
+}
+
+.hdr-search-icon {
+    position: absolute;
+    left: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1rem;
+    height: 1rem;
+}
+
+.hdr-cart-container {
+    position: relative;
+}
+
+.hdr-cart-icon {
+    cursor: pointer;
+}
+
+.hdr-cart-count {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: var(--secondary);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: bold;
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.hdr-cart-dropdown {
+    position: absolute;
+    right: 0;
+    top: 100%;
+    background-color: white;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1rem;
+    width: 250px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    display: none;
+}
+
+.hdr-cart-dropdown.show {
+    display: block;
+}
+
+.hdr-cart-dropdown h3 {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.hdr-cart-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.hdr-btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    cursor: pointer;
+    border: none;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.hdr-btn-primary {
+    background-color: var(--primary);
+    color: white;
+}
+
+.hdr-btn-secondary {
+    background-color: var(--border);
+    color: var(--primary);
+}
+
+.hdr-btn:hover {
+    opacity: 0.9;
+}
+
+@media (max-width: 768px) {
+    .hdr-nav-links {
+        display: none;
+    }
+
+    .hdr-search-container {
+        display: none;
+    }
+}

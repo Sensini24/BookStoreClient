@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bliss. - Shopping Cart</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/styles/cart.css">
+</head>
+<body>
+    <main>
+        <h1 class="page-title">Your Shopping Cart</h1>
+        
+        <div class="cart-container">
+            <div class="cart-items">
+                <div class="cart-item">
+                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-bwlwpwIUqU88MuMVSXMHrb3yhORZhr.png" alt="The First 90 Days" class="item-image">
+                    <div class="item-details">
+                        <h3>The First 90 Days</h3>
+                        <p class="item-author">By Michael D. Watkins</p>
+                        <p class="item-price">$24.99</p>
+                        <div class="quantity-control">
+                            <button class="quantity-btn">-</button>
+                            <span class="quantity">1</span>
+                            <button class="quantity-btn">+</button>
+                        </div>
+                    </div>
+                    <button class="remove-btn">Remove</button>
+                </div>
+
+                <div class="cart-item">
+                    <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-bwlwpwIUqU88MuMVSXMHrb3yhORZhr.png" alt="Hooked" class="item-image">
+                    <div class="item-details">
+                        <h3>Hooked</h3>
+                        <p class="item-author">By Nir Eyal</p>
+                        <p class="item-price">$19.99</p>
+                        <div class="quantity-control">
+                            <button class="quantity-btn">-</button>
+                            <span class="quantity">1</span>
+                            <button class="quantity-btn">+</button>
+                        </div>
+                    </div>
+                    <button class="remove-btn">Remove</button>
+                </div>
+            </div>
+
+            <div class="cart-summary">
+                <h2 class="summary-title">Order Summary</h2>
+                <div class="summary-item">
+                    <span>Subtotal</span>
+                    <span>$44.98</span>
+                </div>
+                <div class="summary-item">
+                    <span>Shipping</span>
+                    <span>$5.00</span>
+                </div>
+                <div class="summary-item">
+                    <span>Tax</span>
+                    <span>$3.60</span>
+                </div>
+                <div class="summary-total">
+                    <span>Total</span>
+                    <span>$53.58</span>
+                </div>
+                <button class="checkout-btn">Proceed to Checkout</button>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

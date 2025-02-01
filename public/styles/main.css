@@ -1,0 +1,8 @@
+html {
+    overflow-y: scroll;
+}
+
+#content {
+    min-height: 400px; /* Ajusta según el contenido promedio */
+    transition: opacity 0.3s ease-in-out;
+}
