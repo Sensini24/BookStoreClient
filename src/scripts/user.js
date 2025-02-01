@@ -1,5 +1,5 @@
 export async function getUserInfo(){
-    const response = await fetch("http://localhost:5112/User/getUserInfo",{
+    const response = await fetch("https://localhost:7113/User/getUserInfo",{
         method:"GET",
         headers:{
             'Content-Type': 'application/json',
@@ -7,12 +7,12 @@ export async function getUserInfo(){
         mode:"cors",
         credentials:"include"
     })
-
+    const data = await response.json()
     if(!response.ok){
         console.log("No existe ningun usuario logeado")
-        return null;
+        return data;
     }
-    const data = await response.json()
+    
     console.log("Usuario logeado: ", data)
     return data
 }

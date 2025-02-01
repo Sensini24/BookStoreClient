@@ -27,6 +27,7 @@
 // 
 import {manejarRuta} from "./scripts/router.js"
 import {addItemsCart, AddOrRemoveItems} from "./scripts/header.js"
+import { Logout } from "./scripts/login.js";
 // import { GetHeader } from "./scripts/header.js";
 
 
@@ -37,4 +38,5 @@ window.addEventListener('DOMContentLoaded', async()=>{
     manejarRuta();
     addItemsCart();
     AddOrRemoveItems();
+    Logout();
 });

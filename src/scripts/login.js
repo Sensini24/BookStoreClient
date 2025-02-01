@@ -30,7 +30,7 @@ export async function PostLogin(){
             const password = document.querySelector(".password").value;
             
             event.preventDefault()
-            const response = await fetch('http://localhost:5112/Auth/login', {
+            const response = await fetch('https://localhost:7113/Auth/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -56,4 +56,28 @@ export async function PostLogin(){
     }catch(err){
         console.error('Error:', err);
     }
+}
+
+export async function Logout(){
+    const logout = document.querySelector(".logout-container");
+    logout.addEventListener("click", async ()=>{
+        const response = await fetch('https://localhost:7113/Auth/logout', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            mode:"cors",
+            credentials:"include"
+        });
+    
+        const data = await response.json();
+
+        if (!response.ok) {
+            console.log("datos incorrectos: ", data)
+        }
+        if(data.success == true){
+            console.log("Datos recibidos:", data);
+            // window.location.href = "http://localhost:5173/login"
+        }
+    })
 }

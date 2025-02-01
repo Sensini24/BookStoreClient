@@ -2,7 +2,7 @@
 // import ".../styles/books"
 async function GetBooks(){
     try{
-        const response = await fetch('http://localhost:5112/Book/getBooks', {
+        const response = await fetch('https://localhost:7113/Book/getBooks', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'

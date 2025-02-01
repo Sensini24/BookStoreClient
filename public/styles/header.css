@@ -124,6 +124,13 @@ body {
     margin-top: 1rem;
 }
 
+.login-container{
+    display: none;
+}
+.logout-container{
+    display: none;
+}
+
 .hdr-btn {
     padding: 0.5rem 1rem;
     font-size: 0.9rem;

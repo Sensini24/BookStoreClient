@@ -22,6 +22,16 @@ export async function GetHeader(){
 export async function AddOrRemoveItems() {
     const user = await getUserInfo()
     console.log("Usuario: ", user)
+    const btnLogin = document.querySelector(".login-container");
+    const btnLogout = document.querySelector(".logout-container");
+    
+    let isLogin= user.success == false ? btnLogin.style.display = "flex" :"none";
+    if(isLogin){
+        btnLogin.addEventListener("click", ()=>{
+            window.location.href="/login"
+        })
+    }
+    let isLogout = user.success == true ? btnLogout.style.display = "flex" :"none";
 }
 
 export function addItemsCart(){
