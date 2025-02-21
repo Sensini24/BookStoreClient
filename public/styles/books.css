@@ -212,6 +212,8 @@ img{
     transform: translateY(-2px);
 }
 
+
+
 @media (max-width: 768px) {
     body {
         padding: 1rem;

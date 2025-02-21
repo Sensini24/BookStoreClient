@@ -30,7 +30,7 @@ export async function PostLogin(){
             const password = document.querySelector(".password").value;
             
             event.preventDefault()
-            const response = await fetch('https://localhost:7113/Auth/login', {
+            const response = await fetch('https://localhost:7164/api/Auth/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -48,7 +48,7 @@ export async function PostLogin(){
             }
             if(data.success == true){
                 console.log("Datos recibidos:", data);
-                window.location.href = "http://localhost:5173/books"
+                window.location.href = "/books"
             }
             
         })
@@ -61,7 +61,7 @@ export async function PostLogin(){
 export async function Logout(){
     const logout = document.querySelector(".logout-container");
     logout.addEventListener("click", async ()=>{
-        const response = await fetch('https://localhost:7113/Auth/logout', {
+        const response = await fetch('https://localhost:7164/api/Auth/logout', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -77,7 +77,7 @@ export async function Logout(){
         }
         if(data.success == true){
             console.log("Datos recibidos:", data);
-            // window.location.href = "http://localhost:5173/login"
+            window.location.href = "/login"
         }
     })
 }

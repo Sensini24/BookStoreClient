@@ -1,5 +1,7 @@
-import {ChargerBooks} from  "./books.js"
+import {ChargerBooks, InsertGenres, ShowImages} from  "./books.js"
+import { ChargeCartItems, EditQuantity } from "./cart.js";
 import { hideHeader, PostLogin } from "./login.js";
+import { verifyLogin } from "./user.js";
 
 async function cargarVista(vista) {
     try {
@@ -20,19 +22,25 @@ async function cargarVista(vista) {
         if (vista === 'books') {
             setTimeout(() => {
                 ChargerBooks();
+                
             }, 150);
         }
 
         if(vista === 'login'){
             hideHeader();
-            PostLogin()
+            PostLogin();
+        }
+
+        if(vista === "addBook"){
+            ShowImages();
+            InsertGenres();
+        }
+
+        if(vista === "cart"){
+            ChargeCartItems();
+            EditQuantity()
         }
         
-        // if (vista === 'login') {
-        //     setTimeout(() => {
-        //         ChargerBooks();
-        //     }, 150);
-        // }
     } catch (error) {
         console.error('Error al cargar la vista:', error);
         document.getElementById('content').innerHTML = '<p>Error al cargar la vista.</p>';
@@ -54,10 +62,16 @@ export function manejarRuta() {
             break;
         case '/cart':
             cargarVista('cart');
+            console.log("Se eligio cart")
+            break;
+        case '/addBook':
+            verifyLogin() //MIDLEWARE PARA VERIFICAR SI EL QUE ESTA ABRIENDO LA VISTA ES ADMINISTRADOR
+            cargarVista('addBook');
+            
             break;
         // case '/login':
         //     cargarVista('cart');
-            break;
+            // break;
         default:
             cargarVista('login');
     }
