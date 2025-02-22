@@ -28,6 +28,7 @@
 import {manejarRuta} from "./scripts/router.js"
 import {addItemsCart, AddOrRemoveItems, showSides} from "./scripts/header.js"
 import { Logout } from "./scripts/login.js";
+import { GetQuantity } from "./scripts/cart.js";
 // import { GetHeader } from "./scripts/header.js";
 
 

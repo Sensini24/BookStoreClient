@@ -146,9 +146,21 @@ export async function EditQuantity(){
     console.log("Cart Item editado: ", datos.message)
 }
 
-// export async function RenderItemsCart() {
-//     const itemsCart = await getCart();
-//     addCartItems(itemsCart);
+export async function GetQuantity(){
+    const response = await fetch('https://localhost:7164/api/Cart/getQuantity', {
+        method:"GET",
+        headers:{
+            'Content-Type': 'application/json'
+        },
+        mode: 'cors',
+        credentials: 'include'
+    })
+
     
-//     window.scrollTo(0, 0);
-// }
+    if(response.status !== 200){
+        return console.log("No se obtuvo la cantidad")
+    }
+    const datos = await response.json();
+    console.log("Cantidad: " , datos)
+    return datos;
+}

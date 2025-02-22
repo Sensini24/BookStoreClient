@@ -1,3 +1,4 @@
+import { GetQuantity } from "./cart.js";
 import { GetGenres } from "./genre.js";
 
 
@@ -103,7 +104,7 @@ const ToCart = ()=>{
                 window.location.href = "/cart";
                 
             } else {
-                console.log("Ya estás en libros");
+                console.log("Libro agregado a carrito")
                 await addBookToCart(bookId)
             }
             
@@ -114,6 +115,10 @@ const ToCart = ()=>{
 }
 
 const addBookToCart = async(bookId)=>{
+    
+    const quantityCart = document.querySelector(".hdr-cart-count").textContent
+    
+
     const response = await fetch(`https://localhost:7164/api/Cart/addUserCart/${bookId}`, {
         method: 'POST',
         headers: {
@@ -127,8 +132,9 @@ const addBookToCart = async(bookId)=>{
         
         return console.log("No se pudo AGREGAR ITEM AL CARRITO")
     }
-    // const data = await response.json(); 
-    console.log("Datos obtenidos: ")
+    let number = parseInt(quantityCart) + 1
+    // const data = await response.json();
+    quantityCart.textContent = number
 }
 
 //-------------------------ADD BOOK -------------------------------------//

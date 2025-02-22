@@ -1,3 +1,4 @@
+import { GetQuantity } from "./cart";
 import { getUserInfo } from "./user";
 
 export async function GetHeader(){
@@ -22,10 +23,12 @@ export async function GetHeader(){
 
 export async function AddOrRemoveItems() {
     const user = await getUserInfo()
+    const quantity = await GetQuantity()
     console.log("Usuario: ", user)
     const btnLogin = document.querySelector(".login-container");
     const btnLogout = document.querySelector(".logout-container");
     const cartContainer = document.querySelector(".hdr-cart-container");
+    const quantityCart = document.querySelector(".hdr-cart-count")
     const hedCarrito = document.querySelector("#cart-side")
     
     let isLogin= user.success == false ? btnLogin.style.display = "flex" :"none";
@@ -39,10 +42,12 @@ export async function AddOrRemoveItems() {
     let isLogout = user.success == true ? btnLogout.style.display = "flex" :"none";
 
     //Mostrar u ocultar icono de carrito
-    if(user.rol == "Cliente"){
+    if(user.rol !== "Administrador"){
         console.log("Si es cliente")
         cartContainer.style.display = "flex"
         hedCarrito.style.display = "flex"
+        quantityCart.textContent = quantity.sumItem
+
     }
 
     
@@ -184,3 +189,4 @@ async function setStyle(id){
     dato.style.backgroundColor = "#000000"
     dato.style.color = "#F5F5F5"
 }
+
