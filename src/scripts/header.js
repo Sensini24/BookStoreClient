@@ -15,6 +15,7 @@ export async function GetHeader(){
         
         addItemsCart();
         chargeStyle()
+        GetLogin()
         // interceptarEnlaces() 
     }catch(err){
         console.error('Error:', err);
@@ -190,3 +191,10 @@ async function setStyle(id){
     dato.style.color = "#F5F5F5"
 }
 
+const GetLogin = ()=>{
+    const btnLogin = document.querySelector(".btn-login")
+
+    if(btnLogin){
+        window.location.href = "/login"
+    }
+}

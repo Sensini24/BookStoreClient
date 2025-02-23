@@ -41,8 +41,9 @@ export async function ChargeCartItems(){
     array.forEach(element => {
         const item = document.createElement("div");
         item.classList.add("cart-items")
+        item.setAttribute("id","cart-container-item")
         item.innerHTML = `
-                <div class="cart-item" data-id=${element.book.id}>
+                <div class="cart-item" data-id=${element.book.id} >
                     <img class="item-image" src="https://localhost:7164${element.book.imagePath}">
                     <div class="item-details">
                         <h3>${element.book.title}</h3>
@@ -88,7 +89,6 @@ export async function EditQuantity(){
         
         var number = parseInt(quantity.textContent)
         if(restBtn){
-            console.log("Button Rest: ", restBtn, quantity.textContent )
             if(number <=1){
                 return
             }
@@ -99,7 +99,6 @@ export async function EditQuantity(){
             // console.log("cantidad: ", number)
         }
         if(addBtn){
-            console.log("Button Add: ", addBtn, quantity.textContent)
             number = number+1
             quantity.textContent = number
             changeCount(bookid, number)
@@ -114,11 +113,6 @@ export async function EditQuantity(){
             console.log("No hay price")
         }
         
-
-        
-        // subtotal.textContent = 
-        // console.log("target: ", completeCart)
-        console.log("Currente quantity: ", number)
         
         
     })
@@ -163,4 +157,39 @@ export async function GetQuantity(){
     const datos = await response.json();
     console.log("Cantidad: " , datos)
     return datos;
+}
+
+export async function RemoveItem(){
+    const containerItems = document.querySelector(".cart-items");
+    containerItems.addEventListener("click", async (event)=>{
+        const cartItem = event.target.closest(".cart-item")
+        const btnRemove = event.target.closest(".remove-btn")
+        const bookId = cartItem.dataset.id
+        const toRemoveContainer = event.target.closest("#cart-container-item")
+        console.log("Btn Remove: ", btnRemove, cartItem.querySelector(".item-author"), bookId, toRemoveContainer)
+
+        if(btnRemove){
+            const response = await fetch(`https://localhost:7164/api/Cart/removeItem/${bookId}`, {
+                method:"DELETE",
+                headers:{
+                    'Content-Type': 'application/json'
+                },
+                mode: 'cors',
+                credentials: 'include'
+            })
+        
+            
+            if(response.status !== 200){
+                return console.log("No se pudo eliminar el item del carrito")
+            }
+            const datos = await response.json();
+
+            deleteContainer(toRemoveContainer)
+            console.log("Item eliminado: " , datos.message)
+        }
+    })
+}
+
+const deleteContainer =(toRemoveContainer)=>{
+    toRemoveContainer.remove();
 }

@@ -1,5 +1,5 @@
 import {ChargerBooks, InsertGenres, ShowImages} from  "./books.js"
-import { ChargeCartItems, EditQuantity } from "./cart.js";
+import { ChargeCartItems, EditQuantity, RemoveItem } from "./cart.js";
 import { hideHeader, PostLogin } from "./login.js";
 import { verifyLogin } from "./user.js";
 
@@ -39,6 +39,7 @@ async function cargarVista(vista) {
         if(vista === "cart"){
             ChargeCartItems();
             EditQuantity()
+            RemoveItem()
         }
         
     } catch (error) {
@@ -67,13 +68,12 @@ export function manejarRuta() {
         case '/addBook':
             verifyLogin() //MIDLEWARE PARA VERIFICAR SI EL QUE ESTA ABRIENDO LA VISTA ES ADMINISTRADOR
             cargarVista('addBook');
-            
             break;
-        // case '/login':
-        //     cargarVista('cart');
-            // break;
+        case '/login':
+            cargarVista("login")
+            break;
         default:
-            cargarVista('login');
+            cargarVista('books');
     }
 }
 
