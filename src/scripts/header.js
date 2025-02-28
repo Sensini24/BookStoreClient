@@ -1,4 +1,5 @@
 import { GetQuantity } from "./cart";
+import { manejarRuta } from "./router";
 import { getUserInfo } from "./user";
 
 export async function GetHeader(){
@@ -44,7 +45,6 @@ export async function AddOrRemoveItems() {
 
     //Mostrar u ocultar icono de carrito
     if(user.rol !== "Administrador"){
-        console.log("Si es cliente")
         cartContainer.style.display = "flex"
         hedCarrito.style.display = "flex"
         quantityCart.textContent = quantity.sumItem
@@ -76,8 +76,12 @@ export async function showSides(){
 
     const completeHeader = document.querySelector(".hdr-header");
     completeHeader.addEventListener("click", (e)=>{
+        event.preventDefault()
+        if(e.target.closest(".hdr-cart-container")){
+            
+            addItemsCart()
+        }
         const target = e.target
-        console.log("target: ", target)
         let id = target.id
         let nombre = ""
         let ruta = window.location.href.split("/")
@@ -120,7 +124,6 @@ function chargeStyle(){
     Header.forEach(async ele=>{
         let ruta = window.location.href.split("/")
         addStyle = ruta[ruta.length-1] == "books" ? setStyle(ele.id) : setStyleNull(ele.id)
-        console.log("adstyle:", addStyle)
     })
     
 }
@@ -134,42 +137,14 @@ function handleSides(book){
     }
 }
 
-export function addItemsCart(){
-    const cartIcon = document.querySelector('.hdr-cart-icon');
-        const cartDropdown = document.querySelector('.hdr-cart-dropdown');
-        const cartCount = document.querySelector('.hdr-cart-count');
-        const addToCartBtn = document.getElementById('hdr-add-to-cart');
-        const removeFromCartBtn = document.getElementById('hdr-remove-from-cart');
-        const cartItems = document.getElementById('hdr-cart-items');
-
-        let itemCount = 0;
-
-        cartIcon.addEventListener('click', () => {
-            cartDropdown.classList.toggle('show');
-        });
-
-        addToCartBtn.addEventListener('click', () => {
-            itemCount++;
-            updateCart();
-        });
-
-        removeFromCartBtn.addEventListener('click', () => {
-            if (itemCount > 0) {
-                itemCount--;
-                updateCart();
-            }
-        });
-
-        function updateCart() {
-            cartCount.textContent = itemCount;
-            cartItems.textContent = itemCount === 0 ? 'No items in cart' : `${itemCount} item${itemCount > 1 ? 's' : ''} in cart`;
-        }
-
-        document.addEventListener('click', (event) => {
-            if (!cartIcon.contains(event.target) && !cartDropdown.contains(event.target)) {
-                cartDropdown.classList.remove('show');
-            }
-        });
+function addItemsCart(){
+    const cartIcon = document.querySelector(".hdr-cart-container");
+    cartIcon.addEventListener("click", (e)=>{
+        e.preventDefault()
+        history.pushState({}, "", "/cart");//El tipico push state para enviar la ruta y usarlo en manerjar ruta para cambiar de contenido SPA
+        console.log("hola header");
+        manejarRuta();
+    })
 }
 
 function localStorageVariable(id, name){

@@ -1,5 +1,6 @@
 import { GetQuantity } from "./cart.js";
 import { GetGenres } from "./genre.js";
+import { manejarRuta } from "./router.js";
 
 
 //-------------------------GET BOOKS -------------------------------------//
@@ -48,22 +49,25 @@ function RenderBooks(books) {
         bookCard.dataset.iscart = book.isInCart
         bookCard.dataset.id = book.idBook
         bookCard.innerHTML = `
-                            <div class="book-cover">
-                                <img src="https://localhost:7164${book.imagePath}">
-                                <span class="book-badge">Best Seller</span>
-                            </div>
-                            <h2 class="book-title">${book.title}</h2>
-                            <p class="book-author">${book.author}</p>
-                            <div class="book-meta">
-                                <span class="book-price">${book.price} PEN</span>
-                                <div class="book-rating">
-                                    <span>4.8</span>
-                                    <span>★★★★★</span>
+                            <div class="part1">
+                                <div class="book-cover">
+                                    <img src="https://localhost:7164${book.imagePath}">
                                 </div>
                             </div>
-                            <div class="book-actions">
-                                <button class="action-btn primary add-cart"></button>
-                                <button class="action-btn secondary">Preview</button>
+                            <div class="part2">
+                                <h2 class="book-title">${book.title}</h2>
+                                <p class="book-author">${book.author}</p>
+                                <div class="book-meta">
+                                    <span class="book-price">${book.price} PEN</span>
+                                    <div class="book-rating">
+                                        <span>4.8</span>
+                                        <span>★★★★★</span>
+                                    </div>
+                                </div>
+                                <div class="book-actions">
+                                    <button class="action-btn primary add-cart"></button>
+                                    <button class="action-btn secondary">Preview</button>
+                                </div>
                             </div>
                             `
 
@@ -95,14 +99,13 @@ const ToCart = ()=>{
             const btnTarget = btnAddCart.closest(".book-card")
             const bookId = btnTarget.dataset.id
             const isInCart = btnTarget.dataset.iscart
-            console.log("btn car presionado :" , isInCart,bookId)
             if (!bookId || isNaN(bookId)) {
                 console.error("El ID del libro no es válido.");
                 return;
             }
             if (isInCart == "true") {
-                window.location.href = "/cart";
-                
+                history.pushState({},"", "/cart")
+                manejarRuta()
             } else {
                 console.log("Libro agregado a carrito")
                 await addBookToCart(bookId)

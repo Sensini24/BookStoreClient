@@ -26,7 +26,7 @@
 // import "../styles/main"
 // 
 import {manejarRuta} from "./scripts/router.js"
-import {addItemsCart, AddOrRemoveItems, showSides} from "./scripts/header.js"
+import {AddOrRemoveItems, showSides} from "./scripts/header.js"
 import { Logout } from "./scripts/login.js";
 import { GetQuantity } from "./scripts/cart.js";
 // import { GetHeader } from "./scripts/header.js";
@@ -37,7 +37,7 @@ window.addEventListener('DOMContentLoaded', async()=>{
     
     // await GetHeader();
     manejarRuta();
-    addItemsCart();
+    // addItemsCart();
     AddOrRemoveItems();
     Logout();
     showSides();

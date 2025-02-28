@@ -1,5 +1,5 @@
 import {ChargerBooks, InsertGenres, ShowImages} from  "./books.js"
-import { ChargeCartItems, EditQuantity, RemoveItem } from "./cart.js";
+import { ChargeCartItems, EditQuantity, PayOrder, RemoveItem } from "./cart.js";
 import { hideHeader, PostLogin } from "./login.js";
 import { verifyLogin } from "./user.js";
 
@@ -40,6 +40,7 @@ async function cargarVista(vista) {
             ChargeCartItems();
             EditQuantity()
             RemoveItem()
+            PayOrder()
         }
         
     } catch (error) {
@@ -81,15 +82,15 @@ export function manejarRuta() {
 window.addEventListener('popstate', manejarRuta);
 
 // Interceptar clics en los enlaces
-    document.addEventListener('click', (e) => {
-        const link = e.target.closest('a'); // Captura el enlace más cercano
+document.addEventListener('click', (e) => {
+    const link = e.target.closest('a'); // Captura el enlace más cercano
 
-        if (link && link.getAttribute('href').startsWith('/')) { // Solo si es una ruta interna
-            e.preventDefault();
-            const ruta = link.getAttribute('href');
-            history.pushState(null, '', ruta); // Actualiza la URL sin recargar
-            manejarRuta(); // Carga la vista correspondiente
-        }
-    });
+    if (link && link.getAttribute('href').startsWith('/')) { // Solo si es una ruta interna
+        e.preventDefault();
+        const ruta = link.getAttribute('href');
+        history.pushState(null, '', ruta); // Actualiza la URL sin recargar
+        manejarRuta(); // Carga la vista correspondiente
+    }
+});
 
 

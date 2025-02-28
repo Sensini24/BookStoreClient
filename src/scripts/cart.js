@@ -22,6 +22,7 @@ export async function ChargeCartItems(){
     const containerItem = document.querySelector(".cart-items");
     const data = await getCart();
     const array = Array.from(data)
+    await AddContentOrderSummary(array)
     if(array.length == 0){
         containerItem.innerHTML = `
         <div class="cart-empty">
@@ -40,6 +41,7 @@ export async function ChargeCartItems(){
     containerItem.innerHTML = "";
     array.forEach(element => {
         const item = document.createElement("div");
+        
         item.classList.add("cart-items")
         item.setAttribute("id","cart-container-item")
         item.innerHTML = `
@@ -66,9 +68,17 @@ export async function ChargeCartItems(){
         const subtotal = item.querySelector(".subtotal-span");
         // console.log("price: ", element.book.price * element.quantity)
         subtotal.textContent =  element.book.price * element.quantity
+        
+        
+        
     });
 
+    
+    //? Suma de precios para Order.
+    // const totalPrice = array.map(pr => pr.book.price)
+    //                     .reduce((sum, price) => sum + price);
 
+    // console.log(totalPrice);
     
 }
 
@@ -76,6 +86,7 @@ export async function EditQuantity(){
 
     const cartItems = document.querySelector(".cart-items")
     cartItems.addEventListener("click", async (event)=>{
+        
         const completeCart = event.target.closest(".cart-item")
         const bookid = completeCart.dataset.id
         const subtotal = completeCart.querySelector(".subtotal-span");
@@ -85,7 +96,9 @@ export async function EditQuantity(){
 
         let quantity = completeCart.querySelector(".quantity")
         let price = completeCart.querySelector("span.item-price")
-        
+        let priceFloat = parseFloat(price.textContent)
+        let totalPrice = document.querySelector(".total-price")
+        let totalPriceFloat = parseFloat(totalPrice.textContent)
         
         var number = parseInt(quantity.textContent)
         if(restBtn){
@@ -95,6 +108,8 @@ export async function EditQuantity(){
             number = number-1
             quantity.textContent = number
             changeCount(bookid, number)
+            totalPriceFloat -= priceFloat
+            totalPrice.textContent = totalPriceFloat.toString()
             
             // console.log("cantidad: ", number)
         }
@@ -102,6 +117,8 @@ export async function EditQuantity(){
             number = number+1
             quantity.textContent = number
             changeCount(bookid, number)
+            totalPriceFloat += priceFloat
+            totalPrice.textContent = totalPriceFloat.toString()
             // console.log("cantidad: ", number)
         }
 
@@ -138,6 +155,7 @@ export async function EditQuantity(){
     }
 
     console.log("Cart Item editado: ", datos.message)
+    // getCart()
 }
 
 export async function GetQuantity(){
@@ -192,4 +210,67 @@ export async function RemoveItem(){
 
 const deleteContainer =(toRemoveContainer)=>{
     toRemoveContainer.remove();
+}
+
+async function AddContentOrderSummary(items){
+
+    const totalPrice = document.querySelector(".total-price")
+    console.log("Elementos;: ", items)
+    console.log("Suma de subtotales: ", await items.map(cartItems =>cartItems.quantity * cartItems.unitPrice).reduce((sum, price)=>sum+price))
+    const total = await items.map(cartItems =>cartItems.quantity * cartItems.unitPrice).reduce((sum, price)=>sum+price)
+    totalPrice.textContent = total.toString()
+    // const containerItem = document.querySelectorAll("#cart-container-item");
+    // let total  = 0;
+    // containerItem.forEach(element =>{
+    //     const title = element.querySelector(".item-author")
+    //     const subTotal = parseFloat(element.querySelector(".subtotal-span").textContent)
+        
+    //     console.log("titulos prueba: ", title)
+    //     console.log("subTotal: ", subTotal)
+    //     total += subTotal
+    // })
+    
+    // console.log("total: ", total)
+}
+
+export async function PayOrder() {
+    const checkoutBtn = document.querySelector(".checkout-btn")
+    checkoutBtn.addEventListener("click", async ()=>{
+        const data = await getCart();
+        const array = Array.from(data)
+        let total = await array.map(cartItems =>cartItems.quantity * cartItems.unitPrice).reduce((sum, price)=>sum+price);
+        let orderDetails = array.map(item => ({
+            bookId: item.book.id,
+            quantity: item.quantity,
+            price: item.unitPrice
+        }));
+
+        // Construir el objeto con el formato correcto
+        const orderData = {
+            total: total,
+            orderDetails: orderDetails // Aquí va la lista
+        };
+        console.log(orderData)
+
+        const response = await fetch('https://localhost:7164/api/Order/payOrder', {
+            method:"POST",
+            headers:{
+                'Content-Type': 'application/json'
+            },
+            // body:JSON.stringify({title:title,description:description, author:author, price:price, stock:stock, Image:imageFile, idGenre:idGenre, tags:tagsconverted}),
+            body:JSON.stringify(orderData),
+            mode: 'cors',
+            credentials: 'include'
+        })
+    
+        const datos = await response.json();
+        if(response.status !== 200){
+            console.log(datos)
+            return console.log("No se pudo pagar la cuenta")
+        }
+    
+        console.log("Cart pagado")
+    })
+    
+
 }
