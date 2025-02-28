@@ -1,4 +1,4 @@
-import { GetQuantity } from "./cart.js";
+import { GetQuantity, GetSuccess } from "./cart.js";
 import { GetGenres } from "./genre.js";
 import { manejarRuta } from "./router.js";
 
@@ -254,5 +254,19 @@ export async function ChargerBooks() {
     
     window.scrollTo(0, 0);
 }
+
+    document.addEventListener("DOMContentLoaded", async () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const token = urlParams.get("token");
+    
+        if (token) {
+            console.log("Procesando pago con token:", token);
+            await GetSuccess(token);
+        }else{
+            console.log("No hay token:", token);
+        }
+    });
+
+
 
 //Funcion para agregar generos en interfaz de creacion de libros

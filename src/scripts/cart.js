@@ -269,8 +269,30 @@ export async function PayOrder() {
             return console.log("No se pudo pagar la cuenta")
         }
     
-        console.log("Cart pagado")
-    })
-    
 
+        
+        window.location.href = datos.approveUrl
+
+
+        console.log("Cart pagado: ", datos)
+    })
 }
+
+export async function GetSuccess(token) {
+    const response = await fetch(`https://localhost:7164/api/Order/paypalSuccess/${token}`, {
+        method: "GET",
+        headers: { 'Content-Type': 'application/json' },
+        mode: 'cors',
+        credentials: 'include'
+    });
+
+    const datos = await response.json();
+    if (response.status !== 200) {
+        console.log(datos);
+        return console.log("No se pudo capturar el pago");
+    }
+
+    console.log("Pago procesado con éxito:", datos);
+    alert("Pago realizado con éxito!");
+}
+

@@ -1,5 +1,5 @@
 import {ChargerBooks, InsertGenres, ShowImages} from  "./books.js"
-import { ChargeCartItems, EditQuantity, PayOrder, RemoveItem } from "./cart.js";
+import { ChargeCartItems, EditQuantity, GetSuccess, PayOrder, RemoveItem } from "./cart.js";
 import { hideHeader, PostLogin } from "./login.js";
 import { verifyLogin } from "./user.js";
 
@@ -20,8 +20,20 @@ async function cargarVista(vista) {
 
         
         if (vista === 'books') {
+            document.addEventListener("DOMContentLoaded", async () => {
+                const urlParams = new URLSearchParams(window.location.search);
+                const token = urlParams.get("token");
+            
+                if (token) {
+                    console.log("Procesando pago con token:", token);
+                    await GetSuccess(token);
+                }else{
+                    console.log("No hay token:", token);
+                }
+            });
             setTimeout(() => {
                 ChargerBooks();
+                // GetUrlToken();
                 
             }, 150);
         }
@@ -34,6 +46,7 @@ async function cargarVista(vista) {
         if(vista === "addBook"){
             ShowImages();
             InsertGenres();
+            
         }
 
         if(vista === "cart"){
