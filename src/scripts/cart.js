@@ -1,3 +1,5 @@
+
+
 async function getCart(){
     const response = await fetch("https://localhost:7164/api/Cart/getUserCart",{
         method:"GET",
@@ -57,14 +59,24 @@ export async function ChargeCartItems(){
                             <button class="quantity-btn" id="add">+</button>
                         </div>
                         <p class="item-price-subtotal" style="font-family: 'Space Grotesk', sans-serif;margin-top:15px; font-size:1.2rem; color:#000000";>
-                        SubTotal: S/ 
-                        <span class="subtotal-span" style="font-family: 'Space Grotesk', sans-serif;"></span> </p>
+                         <span style="font-family: 'Space Grotesk', sans-serif;" data-st=${element.book.stock} id="st-id">Stock: Disponible</span>
+                        <hr>
+                        <div style="margin-top:10px" >
+                            <span style="font-family: 'Space Grotesk', sans-serif;"> SubTotal: S/ </span>
+                            <span class="subtotal-span" style="font-family: 'Space Grotesk', sans-serif;"></span> </p>
+                        </div>
                     </div>
                     <button class="remove-btn">Remove</button>
                 </div>
                 `
         containerItem.appendChild(item)
 
+        let quantity = containerItem.querySelector(".quantity")
+        var number = parseInt(quantity.textContent)
+        console.log("stock: ", element.book.stock)
+        if(number >=element.book.stock){
+            return
+        }
         const subtotal = item.querySelector(".subtotal-span");
         // console.log("price: ", element.book.price * element.quantity)
         subtotal.textContent =  element.book.price * element.quantity
@@ -88,50 +100,53 @@ export async function EditQuantity(){
     cartItems.addEventListener("click", async (event)=>{
         
         const completeCart = event.target.closest(".cart-item")
-        const bookid = completeCart.dataset.id
-        const subtotal = completeCart.querySelector(".subtotal-span");
-
-        const addBtn = event.target.closest("#add")
-        const restBtn = event.target.closest("#rest")
-
-        let quantity = completeCart.querySelector(".quantity")
-        let price = completeCart.querySelector("span.item-price")
-        let priceFloat = parseFloat(price.textContent)
-        let totalPrice = document.querySelector(".total-price")
-        let totalPriceFloat = parseFloat(totalPrice.textContent)
-        
-        var number = parseInt(quantity.textContent)
-        if(restBtn){
-            if(number <=1){
-                return
-            }
-            number = number-1
-            quantity.textContent = number
-            changeCount(bookid, number)
-            totalPriceFloat -= priceFloat
-            totalPrice.textContent = totalPriceFloat.toString()
+        if(completeCart){
+            const bookid = completeCart.dataset.id
+            const subtotal = completeCart.querySelector(".subtotal-span");
+            const stId = completeCart.querySelector("#st-id")
+            const addBtn = event.target.closest("#add")
+            const restBtn = event.target.closest("#rest")
+    
+            let quantity = completeCart.querySelector(".quantity")
+            let price = completeCart.querySelector("span.item-price")
+            let priceFloat = parseFloat(price.textContent)
+            let totalPrice = document.querySelector(".total-price")
+            let totalPriceFloat = parseFloat(totalPrice.textContent)
             
-            // console.log("cantidad: ", number)
+            var number = parseInt(quantity.textContent)
+            var maxst = parseInt(stId.dataset.st)
+            if(restBtn){
+                if(number <=1 ){
+                    return
+                }
+                number = number-1
+                quantity.textContent = number
+                changeCount(bookid, number)
+                totalPriceFloat -= priceFloat
+                totalPrice.textContent = totalPriceFloat.toString()
+                
+                // console.log("cantidad: ", number)
+            }
+            if(addBtn ){
+                if(number>=maxst){
+                    return
+                }
+                number = number+1
+                quantity.textContent = number
+                changeCount(bookid, number)
+                totalPriceFloat += priceFloat
+                totalPrice.textContent = totalPriceFloat.toString()
+                // console.log("cantidad: ", number)
+            }
+    
+            if(price){
+                console.log("Subtotal: ", parseFloat(price.textContent) * parseInt(quantity.textContent))
+                let total = parseFloat(price.textContent) * parseInt(quantity.textContent)
+                subtotal.textContent = total.toString()
+            }else{
+                console.log("No hay price")
+            }
         }
-        if(addBtn){
-            number = number+1
-            quantity.textContent = number
-            changeCount(bookid, number)
-            totalPriceFloat += priceFloat
-            totalPrice.textContent = totalPriceFloat.toString()
-            // console.log("cantidad: ", number)
-        }
-
-        if(price){
-            console.log("Subtotal: ", parseFloat(price.textContent) * parseInt(quantity.textContent))
-            let total = parseFloat(price.textContent) * parseInt(quantity.textContent)
-            subtotal.textContent = total.toString()
-        }else{
-            console.log("No hay price")
-        }
-        
-        
-        
     })
     
 }
@@ -214,27 +229,18 @@ const deleteContainer =(toRemoveContainer)=>{
 
 async function AddContentOrderSummary(items){
 
-    const totalPrice = document.querySelector(".total-price")
-    console.log("Elementos;: ", items)
-    console.log("Suma de subtotales: ", await items.map(cartItems =>cartItems.quantity * cartItems.unitPrice).reduce((sum, price)=>sum+price))
-    const total = await items.map(cartItems =>cartItems.quantity * cartItems.unitPrice).reduce((sum, price)=>sum+price)
-    totalPrice.textContent = total.toString()
-    // const containerItem = document.querySelectorAll("#cart-container-item");
-    // let total  = 0;
-    // containerItem.forEach(element =>{
-    //     const title = element.querySelector(".item-author")
-    //     const subTotal = parseFloat(element.querySelector(".subtotal-span").textContent)
-        
-    //     console.log("titulos prueba: ", title)
-    //     console.log("subTotal: ", subTotal)
-    //     total += subTotal
-    // })
+    if(items.length>0){
+        const totalPrice = document.querySelector(".total-price")
+        console.log("Elementos;: ", items)
+        console.log("Suma de subtotales: ", await items.map(cartItems =>cartItems.quantity * cartItems.unitPrice).reduce((sum, price)=>sum+price))
+        const total = await items.map(cartItems =>cartItems.quantity * cartItems.unitPrice).reduce((sum, price)=>sum+price)
+        totalPrice.textContent = total.toString()
+    }
     
-    // console.log("total: ", total)
 }
 
 export async function PayOrder() {
-    const checkoutBtn = document.querySelector(".checkout-btn")
+    const checkoutBtn = document.querySelector("#paypal-button-container")
     checkoutBtn.addEventListener("click", async ()=>{
         const data = await getCart();
         const array = Array.from(data)
@@ -278,7 +284,7 @@ export async function PayOrder() {
     })
 }
 
-export async function GetSuccess(token) {
+async function GetSuccess(token) {
     const response = await fetch(`https://localhost:7164/api/Order/paypalSuccess/${token}`, {
         method: "GET",
         headers: { 'Content-Type': 'application/json' },
@@ -296,3 +302,14 @@ export async function GetSuccess(token) {
     alert("Pago realizado con éxito!");
 }
 
+export async function ProcesarPago(){
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get("token");
+
+    if (token) {
+        console.log("Procesando pago con token:", token);
+        await GetSuccess(token);
+    }else{
+        console.log("No hay token:", token);
+    }
+}

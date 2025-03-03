@@ -224,6 +224,18 @@ body {
     background-color: var(--secondary);
 }
 
+#paypal-button-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    background-color: #FFC53A;
+    padding: 5px;
+    border-radius: 7px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
 @media (max-width: 768px) {
     body {
         padding: 1rem;

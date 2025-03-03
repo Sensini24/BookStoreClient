@@ -32,7 +32,8 @@ export async function AddOrRemoveItems() {
     const cartContainer = document.querySelector(".hdr-cart-container");
     const quantityCart = document.querySelector(".hdr-cart-count")
     const hedCarrito = document.querySelector("#cart-side")
-    
+    const editBook = document.querySelector("#edit-book")
+    const newBook = document.querySelector("#new-book")
     let isLogin= user.success == false ? btnLogin.style.display = "flex" :"none";
     //Mostrar u ocultar icono de login
     if(isLogin){
@@ -48,9 +49,14 @@ export async function AddOrRemoveItems() {
         cartContainer.style.display = "flex"
         hedCarrito.style.display = "flex"
         quantityCart.textContent = quantity.sumItem
-
+        editBook.style.display = "none"
+        newBook.style.display = "none"
     }
 
+    if(user.rol === "Administrador"){
+        editBook.style.display = "flex"
+        newBook.style.display = "flex"
+    }
     
     // let isthereCart = user.rol == "Cliente" ? 
 

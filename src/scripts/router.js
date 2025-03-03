@@ -1,41 +1,31 @@
-import {ChargerBooks, InsertGenres, ShowImages} from  "./books.js"
-import { ChargeCartItems, EditQuantity, GetSuccess, PayOrder, RemoveItem } from "./cart.js";
+import { ChangePathDetails, ChargerBooks, GetBookById, InsertGenres, ShowImages} from  "./books.js"
+import { ChargeCartItems, EditQuantity, PayOrder, ProcesarPago, RemoveItem } from "./cart.js";
 import { hideHeader, PostLogin } from "./login.js";
 import { verifyLogin } from "./user.js";
 
-async function cargarVista(vista) {
+export async function cargarVista(vista, id) {
     try {
         // Suavizar la transición
-        content.style.opacity = '0';
-        const response = await fetch(`views/${vista}.html`);
+        // content.style.opacity = '1';
+        const response = await fetch(`/views/${vista}.html`);
         if (!response.ok) {
             throw new Error('Vista no encontrada');
         }
         const html = await response.text();
         document.getElementById('content').innerHTML = html;
 
-        setTimeout(() => {
-            content.style.opacity = '1';
-        }, 300);
+        // setTimeout(() => {
+        //     content.style.opacity = '1';
+        // }, 300);
 
-        
+        if(vista === "detailsBook"){
+            GetBookById()   
+        }
         if (vista === 'books') {
-            document.addEventListener("DOMContentLoaded", async () => {
-                const urlParams = new URLSearchParams(window.location.search);
-                const token = urlParams.get("token");
+            ProcesarPago()
+            ChargerBooks();
+            ChangePathDetails()
             
-                if (token) {
-                    console.log("Procesando pago con token:", token);
-                    await GetSuccess(token);
-                }else{
-                    console.log("No hay token:", token);
-                }
-            });
-            setTimeout(() => {
-                ChargerBooks();
-                // GetUrlToken();
-                
-            }, 150);
         }
 
         if(vista === 'login'){
@@ -49,12 +39,17 @@ async function cargarVista(vista) {
             
         }
 
+        if(vista === "errorPages"){
+            // hideHeader();
+        }
+
         if(vista === "cart"){
             ChargeCartItems();
             EditQuantity()
             RemoveItem()
             PayOrder()
         }
+        
         
     } catch (error) {
         console.error('Error al cargar la vista:', error);
@@ -65,7 +60,10 @@ async function cargarVista(vista) {
 export function manejarRuta() {
     
     const ruta = window.location.pathname;
-
+    if (ruta.startsWith("/detailBook/")) {
+        cargarVista('detailsBook'); // Asegúrate de que el nombre sea correcto
+        return;
+    }
     console.log("Rutas: ", ruta)
     switch (ruta) {
         case '/home':
@@ -85,6 +83,13 @@ export function manejarRuta() {
             break;
         case '/login':
             cargarVista("login")
+            break;
+        // case ruta.split("/", ruta.length)[1] === 'detailBook':
+        //     console.log("ruta: ", ruta)
+        //     cargarVista("detailsBook")
+        //     break;
+        case '/unauthorized-access':
+            cargarVista("errorPages")
             break;
         default:
             cargarVista('books');

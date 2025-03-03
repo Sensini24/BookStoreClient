@@ -1,3 +1,4 @@
+
 export async function getUserInfo(){
     const response = await fetch("https://localhost:7164/api/User/getUserInfo",{
         method:"GET",
@@ -23,6 +24,7 @@ export async function verifyLogin(){
     console.log("ROL ACTUAL: ", userCurrent.rol)
     if(userCurrent.rol != "Administrador" || userCurrent == null){
         console.log(userCurrent.rol)
-        window.location.href = "/books"
+        // hideHeader()
+        window.location.href = "/unauthorized-access"
     }
 }

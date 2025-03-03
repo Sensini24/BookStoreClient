@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bliss. - Error Pages</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/styles/errorPages.css">
+</head>
+<body>
+    <!-- Error 404 - Página no encontrada -->
+    <div class="error-container" style="display:none">
+        <a href="/" class="logo">Bliss.</a>
+        <svg class="error-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <h1 class="error-code">404</h1>
+        <h2 class="error-title">Página no encontrada</h2>
+        <p class="error-message">Lo sentimos, la página que estás buscando no existe o ha sido movida.</p>
+        <div class="actions">
+            <a href="/" class="btn btn-primary">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                </svg>
+                Volver al inicio
+            </a>
+            <button class="btn btn-secondary">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M16 17l5-5-5-5M19 12H9m0 0l4 4m-4-4l4-4"/>
+                </svg>
+                Ir atrás
+            </button>
+        </div>
+    </div>
+
+    <!-- Error 403 - No autorizado -->
+    <div class="error-container" style="display: block;">
+        <a href="/" class="logo">Bliss.</a>
+        <svg class="error-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 15v2m0 0v2m0-2h2m-2 0H8m4-6V4m0 0h2m-2 0H8m12 12V8a4 4 0 00-4-4H8a4 4 0 00-4 4v8a4 4 0 004 4h8a4 4 0 004-4z"/>
+        </svg>
+        <h1 class="error-code">403</h1>
+        <h2 class="error-title">Acceso denegado</h2>
+        <p class="error-message">No tienes permiso para acceder a esta página. Por favor, inicia sesión o registrate si no tienes una cuenta.</p>
+        <div class="actions">
+            <a href="/books" class="btn btn-primary">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/>
+                </svg>
+                Volver a Libros
+            </a>
+            <!-- <a href="/" class="btn btn-secondary">Volver al inicio</a> -->
+        </div>
+    </div>
+
+    <!-- Error 500 - Error del servidor -->
+    <div class="error-container" style="display: none;">
+        <a href="/" class="logo">Bliss.</a>
+        <svg class="error-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+        </svg>
+        <h1 class="error-code">500</h1>
+        <h2 class="error-title">Error del servidor</h2>
+        <p class="error-message">Algo salió mal en nuestros servidores. Por favor, inténtalo de nuevo más tarde.</p>
+        <div class="actions">
+            <button class="btn btn-primary" onclick="window.location.reload()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                </svg>
+                Reintentar
+            </button>
+            <a href="/" class="btn btn-secondary">Volver al inicio</a>
+        </div>
+    </div>
+
+    <!-- Error de mantenimiento -->
+    <div class="error-container" style="display: none;">
+        <a href="/" class="logo">Bliss.</a>
+        <svg class="error-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+        </svg>
+        <h2 class="error-title">Sitio en mantenimiento</h2>
+        <p class="error-message">Estamos realizando algunas mejoras. Volveremos pronto.</p>
+        <div class="actions">
+            <button class="btn btn-primary" onclick="window.location.reload()">
+                <span class="loading"></span>
+                Verificar estado
+            </button>
+        </div>
+    </div>
+
+    <!-- Error de conexión -->
+    <div class="error-container" style="display: none;">
+        <a href="/" class="logo">Bliss.</a>
+        <svg class="error-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18.364 5.636a9 9 0 010 12.728m0 0l-2.829-2.829m2.829 2.829L21 21M15.536 8.464a5 5 0 010 7.072m0 0l-2.829-2.829m-4.243 2.829a4.978 4.978 0 01-1.414-2.83m-1.414 5.658a9 9 0 01-2.167-9.238m7.824 2.167a1 1 0 111.414 1.414m-1.414-1.414L3 3m8.293 8.293l1.414 1.414"/>
+        </svg>
+        <h2 class="error-title">Sin conexión</h2>
+        <p class="error-message">No pudimos conectar con el servidor. Por favor, verifica tu conexión a internet.</p>
+        <div class="actions">
+            <button class="btn btn-primary" onclick="window.location.reload()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                </svg>
+                Reintentar conexión
+            </button>
+        </div>
+    </div>
+</body>
+</html>
