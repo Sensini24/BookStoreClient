@@ -65,31 +65,35 @@ function RenderBooks(books) {
                                     </div>
                                     <div class="book-actions">
                                         <button class="action-btn primary add-cart"></button>
-                                        <button class="action-btn secondary preview">Preview</button>
+                                        <button class="action-btn secondary preview">Detalles</button>
                                     </div>
                                 </div>
                                 `
     
             let addCart = bookCard.querySelector(".add-cart")
             const isInCart = book.isInCart;
-            if(isInCart){
-                addCart.textContent = "Ya está en carrito Ver Carro"
-                addCart.style.opacity = "0.5"
-                
-            }else{
-                addCart.textContent = "Agregar a carrito"
-    
-            }; 
+
+            IsInCartOrNotButtonName(addCart, isInCart)
             booklist.appendChild(bookCard);
-    
-            
         }); 
     }
     
 
     ToCart();
     // GetBookById()
-   
+}
+
+export const IsInCartOrNotButtonName=(addCart, isInCart)=>{
+    
+    
+    if(isInCart){
+        addCart.textContent = "Ya está en carrito Ver Carro"
+        addCart.style.opacity = "0.5"
+        
+    }else{
+        addCart.textContent = "Agregar a carrito"
+
+    }; 
     
 }
 
@@ -109,12 +113,12 @@ const ToCart = ()=>{
                     console.error("El ID del libro no es válido.");
                     return;
                 }
-                if (isInCart == "true") {
+                if (isInCart == "true" || btnAddCart.textContent == "Ya está en carrito Ver Carro") {
                     history.pushState({},"", "/cart")
                     manejarRuta()
                 } else {
                     console.log("Libro agregado a carrito")
-                    await addBookToCart(bookId)
+                    await addBookToCart(bookId, btnAddCart)
                 }
                 
             }else{
@@ -126,7 +130,7 @@ const ToCart = ()=>{
     
 }
 
-const addBookToCart = async(bookId)=>{
+export const addBookToCart = async(bookId, addCart)=>{
     
     const quantityCart = document.querySelector(".hdr-cart-count").textContent
     
@@ -144,9 +148,11 @@ const addBookToCart = async(bookId)=>{
         
         return console.log("No se pudo AGREGAR ITEM AL CARRITO")
     }
-    let number = parseInt(quantityCart) + 1
-    // const data = await response.json();
-    quantityCart.textContent = number
+    // let number = parseInt(quantityCart) + 1
+    // // const data = await response.json();
+    // quantityCart.textContent = number
+    addCart.textContent = "Ya está en carrito Ver Carro"
+    addCart.style.opacity = "0.5"
 }
 
 //-------------------------ADD BOOK -------------------------------------//
@@ -267,128 +273,3 @@ export async function ChargerBooks() {
     window.scrollTo(0, 0);
 }
 
-
-
-//?----------------------Detalles libros ------------------------------
-
-export async function ChangePathDetails(){
-    const bookContainer= document.querySelector(".books-grid")
-    if(bookContainer){
-        bookContainer.addEventListener("click", async(event)=>{
-            const btnPreview = event.target.closest(".preview")
-            const card = event.target.closest(".book-card")
-            const idBook = card.dataset.id
-            if (btnPreview) {
-                try {
-                    history.pushState({}, "", `/detailBook/${idBook}`);
-                    // await cargarVista('detailsBook'); // Usa await si cargarVista es async
-                    cargarVista("detailsBook", idBook)
-                } catch (error) {
-                    console.error("Error al cargar la vista:", error);
-                }
-            }
-            
-        })
-    }
-}
-
-export async function GetBookById(){
-    const currentPathDetails = window.location.pathname
-    const idBook = currentPathDetails.split("/", currentPathDetails.length).pop()
-    if(idBook){
-        console.log("IDBOOK: ", idBook)
-        const response = await fetch(`https://localhost:7164/api/Book/getBooksById/${idBook}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            mode:'cors',
-            credentials: "include"
-        });
-        const data = await response.json()
-
-        if(response.status !==200){
-            return console.log("No se obtuvo los libros")
-        }
-        AddInfoDetailsBook(data)
-        console.log("Libros by id obtenidos: ",data.message,data.productos, data.productos[0].title)
-        
-    }
-    console.log("Idbook no encontrado")
-
-}
-
-export async function AddInfoDetailsBook(data){
-    // const data = await GetBookById();
-    console.log("DATA DESDE ADINFO: ", data)
-    const cartDetails = document.querySelector(".main-details")
-    const referenceNode = document.querySelector(".related-books")
-    
-    const ruta = data.productos[0].imagePath
-    const title = data.productos[0].title
-    const author = data.productos[0].author
-    const price = data.productos[0].price
-    const description = data.productos[0].description
-    const tagsArray = data.productos[0].tags
-    
-    const div = document.createElement("section")
-    div.classList.add("book-details")
-    let item = `
-                    <img src="https://localhost:7164${ruta}" alt="The First 90 Days" class="book-cover">
-                    <div class="book-info">
-                        <h1>${title}</h1>
-                        <p class="book-author">${author}</p>
-                        <div class="book-rating">
-                            <span class="star">★★★★★</span>
-                            <span>4.8 (1,234 ratings)</span>
-                        </div>
-                        <p class="book-price">$${price}</p>
-                        <p class="book-description">
-                            ${description}
-                        </p>
-                        <div class="book-tags">
-                            
-                        </div>
-                        <div class="action-buttons">
-                            <button class="btn btn-primary">Agregar a carrito</button>
-                            <button class="btn btn-secondary">Agregar a lista de deseos</button>
-                        </div>
-                    </div>
-                `
-        div.innerHTML = item
-        cartDetails.insertBefore(div,referenceNode)
-
-        //?AGREGAR LOS TAGS
-        let stringTags= ""
-        const bookTag = document.querySelector(".book-tags")
-        tagsArray // Eliminar espacios innecesarios
-        .filter(tag => tag.length > 0)
-        .map((d)=>{
-            stringTags+=d + ","
-        });
-
-        stringTags.split(",", stringTags.length)
-        .filter(s=>s.trim()) // Filtrar vacíos
-        .forEach(tag => {
-            const span = document.createElement("span");
-            span.classList.add("tag");
-            span.textContent = tag.trim();
-            bookTag.appendChild(span);
-            console.log("Tags: ", tag)
-        });
-        // const stringConvert = tagsArray.map((tag)=>{
-        //     stringTags += tag +",";
-        // })
-        // const spliter = stringTags.split(",", stringTags.length)
-        // const withoutspace = spliter.filter(s=> s.trim());
-        // console.log("Sin epacios: ", withoutspace)
-        // const tags = withoutspace.map((tag)=>{
-        //     let span = document.createElement("span")
-        //     span.classList.add("tag")
-        //     span.textContent = tag.trim()
-        //     bookTag.appendChild(span)
-        // })
-        // console.log(stringTags, spliter, tags)
-        // console.log("Tags: ", tagsArray.length)
-        
-}

@@ -198,7 +198,9 @@ export async function RemoveItem(){
         const cartItem = event.target.closest(".cart-item")
         const btnRemove = event.target.closest(".remove-btn")
         const bookId = cartItem.dataset.id
-        const toRemoveContainer = event.target.closest("#cart-container-item")
+        const toRemoveContainer = event.target.closest("#cart-container-item");
+        const subTotalSpan = cartItem.querySelector(".subtotal-span")
+        const totalPrice = document.querySelector(".total-price")
         console.log("Btn Remove: ", btnRemove, cartItem.querySelector(".item-author"), bookId, toRemoveContainer)
 
         if(btnRemove){
@@ -217,13 +219,19 @@ export async function RemoveItem(){
             }
             const datos = await response.json();
 
-            deleteContainer(toRemoveContainer)
+            deleteContainer(toRemoveContainer, subTotalSpan, totalPrice)
+
             console.log("Item eliminado: " , datos.message)
         }
     })
 }
 
-const deleteContainer =(toRemoveContainer)=>{
+const deleteContainer =(toRemoveContainer,subTotalSpan, totalPrice)=>{
+    
+    let sub = parseFloat(subTotalSpan.textContent)
+    let tot = parseFloat(totalPrice.textContent)
+    let resta = tot - sub;
+    totalPrice.textContent = resta.toString()
     toRemoveContainer.remove();
 }
 

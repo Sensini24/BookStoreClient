@@ -242,6 +242,11 @@ body {
     font-weight: 600;
     color: var(--secondary);
 }
+.comment-book{
+    width: 100%;
+    height: 6rem;
+    padding: 10px;
+}
 
 @media (max-width: 768px) {
     body {

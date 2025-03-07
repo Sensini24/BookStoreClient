@@ -1,5 +1,7 @@
-import { ChangePathDetails, ChargerBooks, GetBookById, InsertGenres, ShowImages} from  "./books.js"
+import { ChargerBooks, InsertGenres, ShowImages} from  "./books.js"
 import { ChargeCartItems, EditQuantity, PayOrder, ProcesarPago, RemoveItem } from "./cart.js";
+// import { AddComment } from "./comment.js";
+import { ChangePathDetails, GetBookById } from "./detailsBook.js";
 import { hideHeader, PostLogin } from "./login.js";
 import { verifyLogin } from "./user.js";
 
@@ -19,13 +21,13 @@ export async function cargarVista(vista, id) {
         // }, 300);
 
         if(vista === "detailsBook"){
-            GetBookById()   
+            GetBookById()
+            // AddComment()
         }
         if (vista === 'books') {
             ProcesarPago()
             ChargerBooks();
             ChangePathDetails()
-            
         }
 
         if(vista === 'login'){
